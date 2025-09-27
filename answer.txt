@@ -1,0 +1,25 @@
+./client -f Size vs Time Table
+
+Size (MB), Time (ms)
+1, 1028
+2, 2193
+3, 3393
+4, 4718
+5, 5834
+6, 7124
+7, 7744
+8, 9571
+9, 10088
+10, 11432
+
+The trend is pretty much linear. This is because
+we use the same buffer size for each file data request
+and we are also requesting the same amount of bytes each channel read.
+
+Since these numbers don't change, the time it takes to perform those operations
+remains around the same. This means the time will scale linearly with size.
+
+The main bottleneck in the file transfer is the server chunk capacity MAX_SIZE
+which is 256 bytes. I tested this by reducing the chunk size to 100 bytes
+with -m 100, and the elapsed time increased significantly. 
+
